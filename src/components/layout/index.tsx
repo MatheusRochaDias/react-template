@@ -12,7 +12,7 @@ export default function Layout({ children }: layoutProps) {
   const { asPath } = useRouter();
   console.log(asPath === '');
   const checkRoute = ['/login'];
-  const { mainColor, textGray, font } = useGlobal();
+  const { mainColor } = useGlobal();
   return (
     <Box>
       {checkRoute.includes(asPath) ? (
@@ -32,7 +32,7 @@ export default function Layout({ children }: layoutProps) {
             </Box>
             <Flex mx="auto" bg="#ffffff">
               <Sidebar />
-              <Box ml="16vw">
+              <Box ml="16vw" w="100%">
                 <Box p="2rem">
                   <Box>{children}</Box>
                 </Box>

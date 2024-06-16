@@ -13,6 +13,7 @@ export default function Header() {
       position="fixed"
       top="0"
       width="100%"
+      zIndex={1000}
     >
       <Flex w="16vw">
         <Image src="/logo_black.png" w="10vw" maxW="200px" h="min" />
