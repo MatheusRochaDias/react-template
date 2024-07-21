@@ -27,10 +27,15 @@
     "framer-motion": "^11.2.10",
     "next": "13.2.3",
     "nextjs-progressbar": "^0.0.16",
+    "nookies": "^2.5.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^5.2.1",
+    "react-hook-form": "^7.36.1",
     "react-query": "^3.39.2",
+    "axios": "^1.2.0",
+    "yup": "^0.32.11",
+    "@hookform/resolvers": "^2.9.8",
     "react-router-dom": "^6.4.4"
   },
   "devDependencies": {

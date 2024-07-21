@@ -6,6 +6,9 @@ import { useEffect, useState } from 'react';
 import Layout from '@/components/layout';
 import { queryClient } from '@/services/queryClient';
 import { useGlobal } from '@/styles/base';
+import { AuthProvider } from '@/context/AuthContext';
+import { authPageProps } from '@/utils/authPageProps';
+import { ThemeProvider } from '@/context/themeContext';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -32,12 +35,18 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider>
-        <Layout>
-          <Component {...pageProps} />{' '}
-        </Layout>
+        <ThemeProvider>
+          <AuthProvider>
+            <Layout>
+              <Component {...pageProps} />{' '}
+            </Layout>
+          </AuthProvider>
+        </ThemeProvider>
       </ChakraProvider>
     </QueryClientProvider>
   );
 }
+
+MyApp.getInitialProps = authPageProps;
 
 export default MyApp;

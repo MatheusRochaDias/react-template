@@ -1,9 +1,15 @@
-import { Box, Collapse, Divider, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
-import { SetStateAction, useState } from 'react';
-import { useGlobal } from '@/styles/base';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useTheme } from '@/context/themeContext';
 
 const pages = [
+  {
+    head: 'Square',
+    icon: 'tabler:id-badge',
+    link: '/square',
+  },
   {
     head: 'Restaurants',
     icon: 'ic:sharp-store-mall-directory',
@@ -36,80 +42,86 @@ const pages = [
 ];
 
 export default function Sidebar() {
-  const { mainColor, textGray, font } = useGlobal();
-  const [expandedItem, setExpandedItem] = useState(null);
+  const [expandedItem, setExpandedItem] = useState<number | null>(null);
+  const { theme } = useTheme();
+  const router = useRouter();
 
-  const toggleItem = (idx: any) => {
-    if (expandedItem === idx) {
-      setExpandedItem(null);
+  const toggleItem = (idx: number, item: any) => {
+    if (item.subItem) {
+      setExpandedItem(expandedItem === idx ? null : idx);
     } else {
       setExpandedItem(idx);
+      router.push(item.link);
     }
   };
+
+  useEffect(() => {
+    const currentPage = pages.findIndex(
+      (item) =>
+        item.link === router.pathname ||
+        (item.subItem &&
+          item.subItem.some((sub) => sub.link === router.pathname))
+    );
+    setExpandedItem(currentPage);
+  }, [router.pathname]);
+
   return (
-    <Box
-      borderRight={`1px solid ${textGray}`}
-      h="100vh"
-      position="fixed"
-      px="1.5rem"
-      w="16vw"
-    >
+    <Box h="100vh" position="fixed" w="13vw" bg={theme.mainColor}>
       <Box mt="2rem">
         <Text
-          fontFamily={font}
-          px=" 1.25rem"
-          fontSize="0.800rem"
+          fontFamily={theme.font}
+          fontSize="1.250rem"
           pb="1rem"
-          color={mainColor}
+          color="#ffffff"
           fontWeight="bold"
+          mx="1.5rem"
         >
           Main Menu
         </Text>
         {pages.map((item, idx) => (
           <Box key={idx} transition="height 1s ease-in-out">
-            {' '}
             <Flex
               alignItems="center"
               justify="space-between"
               cursor="pointer"
-              onClick={() => toggleItem(idx)}
+              onClick={() => toggleItem(idx, item)}
               _hover={{
-                '.hover-text': { color: expandedItem !== idx && mainColor },
+                '.hover-text': { color: expandedItem !== idx && '#ffffff' },
               }}
-              bg={expandedItem === idx ? mainColor : 'transparent'}
-              color={expandedItem === idx ? '#ffffff' : '#777777'}
-              // transition="background-color 0.1s, color 1s"
-              borderRadius="0.5rem"
+              bg={expandedItem === idx ? '#f3f3f4' : 'transparent'}
+              color={expandedItem === idx ? '#000000' : '#777777'}
+              w="100%"
               p="0.9rem 1.25rem"
             >
               <Flex gap={3}>
                 <Icon
                   icon={item.icon}
-                  color={expandedItem === idx ? '#ffffff' : '#96A0AF'}
+                  color={expandedItem === idx ? '#000000' : '#96A0AF'}
                   width="1.5rem"
                 />
                 <Text
-                  fontFamily={font}
-                  color={expandedItem === idx ? '#ffffff' : '#777777'}
+                  fontFamily={theme.font}
+                  color={expandedItem === idx ? '#000000' : '#777777'}
                   fontSize="1rem"
                   fontWeight={700}
                   className="hover-text"
-                  // transition="color 0.5s ease"
                 >
                   {item.head}
                 </Text>
               </Flex>
-              <Icon
-                icon={
-                  expandedItem === idx
-                    ? 'ri:arrow-down-s-fill'
-                    : 'ri:arrow-right-s-fill'
-                }
-                color={expandedItem === idx ? '#ffffff' : '#96A0AF'}
-                width="1.5rem"
-              />
+              {item.subItem && (
+                <Icon
+                  icon={
+                    expandedItem === idx
+                      ? 'ri:arrow-down-s-fill'
+                      : 'ri:arrow-right-s-fill'
+                  }
+                  color={expandedItem === idx ? '#000000' : '#96A0AF'}
+                  width="1.5rem"
+                />
+              )}
             </Flex>
-            {expandedItem === idx && (
+            {expandedItem === idx && item.subItem && (
               <Box
                 ml="2rem"
                 mt="0.5rem"
@@ -126,7 +138,7 @@ export default function Sidebar() {
                       w="100%"
                       _hover={{
                         '.hover-subtext': {
-                          color: mainColor,
+                          color: '#ffffff',
                         },
                         '.hover-subicon': {
                           width: '1.5rem',
@@ -140,12 +152,12 @@ export default function Sidebar() {
                       >
                         <Icon
                           icon="pajamas:dash"
-                          color={mainColor}
+                          color="#ffffff"
                           width="100%"
                         />
                       </Box>
                       <Text
-                        fontFamily={font}
+                        fontFamily={theme.font}
                         color="#777777"
                         fontSize="0.875rem"
                         fontWeight={600}

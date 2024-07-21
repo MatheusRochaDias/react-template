@@ -1,4 +1,7 @@
-export type User = {
-  username: string;
-  role: 'admin_master' | 'admin';
-};
+export interface SignInRequestData {
+  email: string;
+  password: string;
+}
+export interface authToken {
+  token: string;
+}

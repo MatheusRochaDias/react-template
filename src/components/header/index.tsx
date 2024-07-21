@@ -1,12 +1,15 @@
 import { Flex, Image } from '@chakra-ui/react';
 import { useGlobal } from '@/styles/base';
+import { useTheme } from '@/context/themeContext';
 
 export default function Header() {
   const { mainColor, font } = useGlobal();
+
+  const { theme } = useTheme();
   return (
     <Flex
       justify="space-between"
-      bg={mainColor}
+      bg={theme.mainColor}
       px="2vw"
       alignItems="center"
       h="5.5rem"
