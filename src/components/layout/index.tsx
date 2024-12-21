@@ -1,5 +1,5 @@
 // src/components/layout.tsx
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, Grid, Text, GridItem, VStack } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import { parseCookies } from 'nookies';
@@ -33,26 +33,29 @@ export default function Layout({ children }: LayoutProps) {
         children
       ) : (
         <Box>
-          <Header />
-          <Box bg="#ffffff" mt="5.5rem">
-            <Box
-              bg={theme.mainColor}
-              h="1rem"
+          <Grid templateColumns="repeat(6, 1fr)" gap={4} bg="#F9FBFB">
+            <GridItem
+              colSpan={1}
               position="fixed"
-              width="100%"
-              top="5.5rem"
+              top="0"
+              left="0"
+              height="100vh"
+              width="250px"
             >
-              <Box bg="#f3f3f4" h="100%" borderRadius="30px 30px 0px 0px" />
-            </Box>
-            <Flex mx="auto" bg="#f3f3f4">
               <Sidebar />
-              <Box ml="13vw" w="100%">
-                <Box p="2rem">
-                  <Box>{children}</Box>
-                </Box>
-              </Box>
-            </Flex>
-          </Box>
+            </GridItem>
+            <GridItem
+              colSpan={5}
+              ml="250px"
+              h="100vh"
+              w="100%"
+              bg="#F9FBFB"
+              width="calc(100%)"
+            >
+              <Box p={5}>{children}</Box>
+            </GridItem>
+          </Grid>
+          {/* <Header /> */}
         </Box>
       )}
     </Box>

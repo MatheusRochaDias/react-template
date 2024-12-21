@@ -18,14 +18,21 @@ const signOut = () => {
 };
 
 export function getAPIClient(ctx?: any) {
-  const { ['@food_token']: access } = parseCookies(ctx);
-
+  // const { ['@food_token']: access } = parseCookies(ctx);
+  const access = '1234';
   let isRefreshing = false;
 
   let failedRequestsQueue: Array<FailedRequestQueue> = [];
 
+  // const api = axios.create({
+  //   baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/`,
+  //   headers: {
+  //     'Content-type': 'application/json',
+  //     'Access-Control-Allow-Origin': '*',
+  //   },
+  // });
   const api = axios.create({
-    baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/api`,
+    baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/`,
     headers: {
       'Content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
@@ -127,9 +134,10 @@ export function getAPIClient(ctx?: any) {
   api.interceptors.request.use((config) => {
     return config;
   });
-
+  // TODO AJUSTAR ABAIXO
   if (access) {
     api.defaults.headers.common.Authorization = `Bearer ${access}`;
+    // api.defaults.headers.common.Authorization = `Bearer 123`;
   }
 
   return api;

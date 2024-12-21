@@ -11,8 +11,12 @@ export default class MyDocument extends Document {
             content="initial-scale=1.0, width=device-width"
           />
           {/* <link rel="stylesheet" href="devices.min.css" type="text/css" /> */}
+          <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+            rel="stylesheet"
+          />
           <link rel="shortcut icon" href="/white_logo.png" />
-          <title>Thinkchef</title>
+          <title>Chef Online</title>
           {/* <meta
             name="google-site-verification"
             content="fRI-UdR0xUune55VjbwHaMNxR-VCQw5LrsUpdagUjDA"

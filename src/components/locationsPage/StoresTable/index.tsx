@@ -10,10 +10,6 @@ import {
   Box,
   useToast,
   Text,
-  Badge,
-  IconButton,
-  Checkbox,
-  Tooltip,
   Flex,
   Button,
   Menu,
@@ -33,11 +29,9 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { FiArrowRight } from 'react-icons/fi';
-import { MdLocationOn } from 'react-icons/md';
 import { Icon } from '@iconify/react';
-import { SortableItem } from '../SortableItem';
-import storesData from '@/mocks/stores';
+import { SortableItem } from '../../SortableItem';
+// import storesData from '@/mocks/stores';
 import { useGlobal } from '@/styles/base';
 
 interface Store {
@@ -54,7 +48,7 @@ interface Store {
 }
 
 const StoresTable: React.FC = () => {
-  const [stores, setStores] = useState<Store[]>(storesData);
+  const [stores, setStores] = useState<Store[]>([]);
   const toast = useToast();
 
   const sensors = useSensors(

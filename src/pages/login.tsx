@@ -45,6 +45,7 @@ export default function Login() {
   async function handleSignIn(data: SignInRequestData) {
     setLoading(true);
     try {
+      console.log('123');
       await signIn(data);
     } catch (error) {
       console.error(error);

@@ -21,7 +21,7 @@ type ThemeContextType = {
 
 const defaultTheme: ThemeConfig = {
   logo: '/assets/logo/logo_default.png',
-  mainColor: '#000000',
+  mainColor: '#F2F3EB',
   font: "'Poppins', sans-serif",
   textGray: '#666666',
   inputColor: '#000000',
@@ -31,7 +31,8 @@ const defaultTheme: ThemeConfig = {
 const ThemeContext = createContext<ThemeContextType>({ theme: defaultTheme });
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const theme = getClientConfig() || defaultTheme;
+  const theme = defaultTheme;
+  // const theme = getClientConfig() || defaultTheme;
   return (
     <ThemeContext.Provider value={{ theme }}>{children}</ThemeContext.Provider>
   );

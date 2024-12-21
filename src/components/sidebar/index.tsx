@@ -1,179 +1,149 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
-import { Icon } from '@iconify/react';
-import { useEffect, useState } from 'react';
+import React from 'react';
+import {
+  VStack,
+  Box,
+  Text,
+  Icon,
+  HStack,
+  Spacer,
+  Flex,
+  Image,
+} from '@chakra-ui/react';
+import {
+  FaHome,
+  FaTh,
+  FaMapMarkerAlt,
+  FaUtensils,
+  FaBoxes,
+  FaList,
+  FaLayerGroup,
+  FaTags,
+  FaUsers,
+  FaShoppingCart,
+  FaBullhorn,
+  FaCog,
+  FaSignOutAlt,
+} from 'react-icons/fa';
 import { useRouter } from 'next/router';
-import { useTheme } from '@/context/themeContext';
 
-const pages = [
-  {
-    head: 'Square',
-    icon: 'tabler:id-badge',
-    link: '/square',
-  },
-  {
-    head: 'Restaurants',
-    icon: 'ic:sharp-store-mall-directory',
-    subItem: [
-      { title: 'Restaurants', link: '/restaurants' },
-      { title: 'Access key', link: '/access-key' },
-    ],
-  },
-  {
-    head: 'Menu',
-    icon: 'ion:restaurant',
-    subItem: [
-      { title: 'Menu', link: '/menu' },
-      { title: 'Items', link: '/items' },
-      { title: 'Category', link: '/category' },
-      { title: 'Modifiers', link: '/modifiers' },
-      { title: 'Reviews', link: '/reviews' },
-    ],
-  },
-  {
-    head: 'Clients',
-    icon: 'clarity:user-line',
-    subItem: [{ title: 'Clients', link: '/clients' }],
-  },
-  {
-    head: 'Orders',
-    icon: 'material-symbols:order-approve-rounded',
-    subItem: [{ title: 'Orders', link: '/orders' }],
-  },
-];
-
-export default function Sidebar() {
-  const [expandedItem, setExpandedItem] = useState<number | null>(null);
-  const { theme } = useTheme();
+const Sidebar = () => {
   const router = useRouter();
 
-  const toggleItem = (idx: number, item: any) => {
-    if (item.subItem) {
-      setExpandedItem(expandedItem === idx ? null : idx);
-    } else {
-      setExpandedItem(idx);
-      router.push(item.link);
-    }
+  const items = [
+    { icon: FaHome, label: 'Dashboard', path: '/' },
+    { icon: FaTh, label: 'Square Apps', path: '/square-apps' },
+    { icon: FaMapMarkerAlt, label: 'Locations', path: '/locations' },
+    { icon: FaUtensils, label: 'Menu', path: '/menu' },
+    // { icon: FaBoxes, label: 'Items', path: '/items' },
+    // { icon: FaList, label: 'Categories', path: '/categories' },
+    { icon: FaTags, label: 'Discounts & Taxes', path: '/discounts-taxes' },
+    { icon: FaUsers, label: 'Clients', path: '/clients' },
+    { icon: FaShoppingCart, label: 'Orders', path: '/orders' },
+    { icon: FaBullhorn, label: 'Marketing', path: '/marketing' },
+    { icon: FaLayerGroup, label: 'Reviews', path: '/review' },
+    // { icon: FaCog, label: 'Settings', path: '/settings' },
+  ];
+
+  const handleNavigation = (path: string) => {
+    router.push(path);
   };
 
-  useEffect(() => {
-    const currentPage = pages.findIndex(
-      (item) =>
-        item.link === router.pathname ||
-        (item.subItem &&
-          item.subItem.some((sub) => sub.link === router.pathname))
-    );
-    setExpandedItem(currentPage);
-  }, [router.pathname]);
-
   return (
-    <Box h="100vh" position="fixed" w="13vw" bg={theme.mainColor}>
-      <Box mt="2rem">
-        <Text
-          fontFamily={theme.font}
-          fontSize="1.250rem"
-          pb="1rem"
-          color="#ffffff"
-          fontWeight="bold"
-          mx="1.5rem"
+    <Box h="100vh">
+      <VStack
+        align="start"
+        bg="white"
+        color="gray.700"
+        height="100vh"
+        width="250px"
+        spacing={2}
+        boxShadow="lg"
+        fontFamily="'Inter', sans-serif"
+      >
+        <Box mb={4} p={4}>
+          <Flex justify="space-between" alignItems="center" gap="4">
+            <Image src="/logo.svg" objectFit="cover" w="50px" />
+            <Text fontSize="xl" fontWeight="bold" color="black" mt="15px">
+              Chef Online
+            </Text>
+          </Flex>
+        </Box>
+        <VStack
+          maxH="80%"
+          p={4}
+          spacing={2}
+          overflowY="auto"
+          w="100%"
+          sx={{
+            /* Estilos para navegadores WebKit (Chrome, Safari) */
+            '::-webkit-scrollbar': {
+              width: '4px', // Largura da barra de rolagem
+            },
+            '::-webkit-scrollbar-thumb': {
+              background: '#CBD5E0', // Cor da barra de rolagem
+              borderRadius: '10px',
+            },
+            '::-webkit-scrollbar-thumb:hover': {
+              background: '#A0AEC0', // Cor quando o mouse está em hover
+            },
+            '::-webkit-scrollbar-track': {
+              background: '#F7FAFC', // Cor de fundo da barra de rolagem
+            },
+            '::-webkit-scrollbar-button': {
+              display: 'none', // Remove as setas no Chrome/Safari
+            },
+
+            /* Estilos para Firefox */
+            scrollbarWidth: 'thin', // Barra fina no Firefox
+            scrollbarColor: '#CBD5E0 #F7FAFC', // Thumb e background da barra de rolagem
+          }}
         >
-          Main Menu
-        </Text>
-        {pages.map((item, idx) => (
-          <Box key={idx} transition="height 1s ease-in-out">
-            <Flex
-              alignItems="center"
-              justify="space-between"
-              cursor="pointer"
-              onClick={() => toggleItem(idx, item)}
+          {items.map((item, index) => (
+            <HStack
+              key={item.label}
+              align="center"
+              p={2}
+              width="100%"
+              borderRadius="md"
               _hover={{
-                '.hover-text': { color: expandedItem !== idx && '#ffffff' },
+                bg: router.pathname !== item.path ? '#F2F3EB' : '#7C8C2F',
               }}
-              bg={expandedItem === idx ? '#f3f3f4' : 'transparent'}
-              color={expandedItem === idx ? '#000000' : '#777777'}
-              w="100%"
-              p="0.9rem 1.25rem"
+              cursor="pointer"
+              bg={router.pathname === item.path ? '#7C8C2F' : 'transparent'}
+              color={router.pathname === item.path ? 'white' : 'gray.700'}
+              onClick={() => handleNavigation(item.path)}
             >
-              <Flex gap={3}>
-                <Icon
-                  icon={item.icon}
-                  color={expandedItem === idx ? '#000000' : '#96A0AF'}
-                  width="1.5rem"
-                />
-                <Text
-                  fontFamily={theme.font}
-                  color={expandedItem === idx ? '#000000' : '#777777'}
-                  fontSize="1rem"
-                  fontWeight={700}
-                  className="hover-text"
-                >
-                  {item.head}
-                </Text>
-              </Flex>
-              {item.subItem && (
-                <Icon
-                  icon={
-                    expandedItem === idx
-                      ? 'ri:arrow-down-s-fill'
-                      : 'ri:arrow-right-s-fill'
-                  }
-                  color={expandedItem === idx ? '#000000' : '#96A0AF'}
-                  width="1.5rem"
-                />
-              )}
-            </Flex>
-            {expandedItem === idx && item.subItem && (
-              <Box
-                ml="2rem"
-                mt="0.5rem"
-                transition="height 1s ease-in-out"
-                maxHeight={expandedItem === idx ? 'auto' : '0'}
-                overflowY="hidden"
-              >
-                {item.subItem.map((sub, subIdx) => (
-                  <a href={sub.link} key={subIdx}>
-                    <Flex
-                      alignItems="center"
-                      gap={3}
-                      py="0.4rem"
-                      w="100%"
-                      _hover={{
-                        '.hover-subtext': {
-                          color: '#ffffff',
-                        },
-                        '.hover-subicon': {
-                          width: '1.5rem',
-                        },
-                      }}
-                    >
-                      <Box
-                        w="1rem"
-                        transition="ease-in-out 0.3s"
-                        className="hover-subicon"
-                      >
-                        <Icon
-                          icon="pajamas:dash"
-                          color="#ffffff"
-                          width="100%"
-                        />
-                      </Box>
-                      <Text
-                        fontFamily={theme.font}
-                        color="#777777"
-                        fontSize="0.875rem"
-                        fontWeight={600}
-                        transition="ease-in-out 0.5s"
-                        className="hover-subtext"
-                      >
-                        {sub.title}
-                      </Text>
-                    </Flex>
-                  </a>
-                ))}
-              </Box>
-            )}
-          </Box>
-        ))}
-      </Box>
+              <Icon
+                as={item.icon}
+                boxSize={4}
+                color={router.pathname === item.path ? 'white' : 'gray.700'}
+              />
+              <Text fontSize="md">{item.label}</Text>
+            </HStack>
+          ))}
+          <Spacer />
+          <Spacer />
+          <Spacer />
+          <Spacer />
+          <Spacer />
+          <Spacer />
+          <Spacer />
+          <HStack
+            align="center"
+            p={2}
+            width="100%"
+            borderRadius="md"
+            _hover={{ bg: 'gray.200' }}
+            cursor="pointer"
+            onClick={() => handleNavigation('/logout')}
+          >
+            <Icon as={FaSignOutAlt} boxSize={4} />
+            <Text fontSize="md">Log out</Text>
+          </HStack>
+        </VStack>
+      </VStack>
     </Box>
   );
-}
+};
+
+export default Sidebar;

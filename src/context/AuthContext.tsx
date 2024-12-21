@@ -28,22 +28,39 @@ export function AuthProvider({ children }: Component) {
     Router.push('/login');
   }
 
+  // async function signIn(credentials: SignInRequestData) {
+  //   try {
+  //     const { token } = await signInRequest(credentials);
+  //     setCookie(undefined, '@food_token', token, {
+  //       maxAge: 60 * 60 * 24, // 24 horas
+  //       path: '/',
+  //     });
+
+  //     if (token) {
+  //       api.defaults.headers.common.Authorization = `Bearer ${token}`;
+  //       setIsAuthenticated(true);
+  //       Router.push(`/`);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw error;
+  //   }
+  // }
+
   async function signIn(credentials: SignInRequestData) {
     try {
-      const { token } = await signInRequest(credentials);
+      // Força a autenticação para testes
+      setIsAuthenticated(true);
+      let token = '123';
       setCookie(undefined, '@food_token', token, {
         maxAge: 60 * 60 * 24, // 24 horas
         path: '/',
       });
-
-      if (token) {
-        api.defaults.headers.common.Authorization = `Bearer ${token}`;
-        setIsAuthenticated(true);
-        Router.push(`/`);
-      }
+      console.log('Login bem-sucedido! Redirecionando...');
+      Router.push(`/`); // Redireciona para a página inicial
     } catch (error) {
-      console.error(error);
-      throw error;
+      console.error('Erro ao fazer login:', error);
+      throw error; // Deixe o erro ser capturado na página de login
     }
   }
 
